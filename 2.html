@@ -1,0 +1,49 @@
+<p>Another simple and elegant way with a little JS to animate the chart</p>
+<a href="https://codepen.io/nkunic/pen/jXBZWV">A CodePen example</a>
+
+<br />
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 34 34">
+	<circle cx="16" cy="16" r="15.9155" class="progress-bar__background" />
+	<circle cx="16" cy="16" r="15.9155"  class="progress-bar__progress js-progress-bar" />
+</svg>
+
+<style>
+	/* I changed the example to use css variables instead SCSS variables and add some comments */
+
+	:root {
+		--progress-bar-stroke-width: 1.8;
+		--progress-bar-size: 300px;
+	}
+
+	svg {
+		height: var(--progress-bar-size);
+		width: var(--progress-bar-size);
+		transform: rotate(-90deg);
+	}
+
+	.progress-bar__background {
+		fill: none;
+		stroke: #e2eff0;
+		stroke-width: var(--progress-bar-stroke-width);
+	}
+
+	.progress-bar__progress {
+		fill: none;
+		stroke: #78bec7;
+		stroke-dasharray: 100 100;
+		stroke-dashoffset: 100;
+		stroke-linecap: round;
+		stroke-width: var(--progress-bar-stroke-width);
+		transition: stroke-dashoffset 1s ease-in-out;
+	}
+</style>
+
+<script>
+	setTimeout(() => {
+		const percentageComplete = 0.4;
+		const strokeDashOffsetValue = 100 - (percentageComplete * 100);
+		const progressBar = document.getElementsByClassName("js-progress-bar")[0];
+		progressBar.style["stroke-dashoffset"] = strokeDashOffsetValue;
+	}, 400)
+</script>

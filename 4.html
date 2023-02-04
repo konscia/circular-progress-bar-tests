@@ -1,0 +1,103 @@
+<p> A more explicated example</p>
+<a href="https://medium.com/@josephwong2004/how-to-do-x-in-css-radial-progress-chart-317f10994c08">How to do Radial
+	Progress Chart in CSS</a>
+
+<hr />
+
+<script
+	src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
+	integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo="
+	crossorigin="anonymous"></script>
+
+<div class='container'>
+	<svg width='200' height='200' class='chart-container'>
+		<circle cx='100' cy='100' r='90' class='back' fill='none' class='back'/>
+		<circle cx='100' cy='100' r='90' class='front' fill='none'/>
+		<g class='text'>
+			<text x='100' y='100' alignment-baseline="central" text-anchor="middle" id='percentage'>0%</text>
+		</g>
+	</svg>
+</div>
+
+<style>
+	.container {
+		display: flex;
+		justify-content: center;
+		background-color: #edf2f4;
+		min-height: 100vh;
+	}
+
+	.container .chart-container {
+		padding: 10px;
+	}
+
+	.container .chart-container .back {
+		stroke: #8d99ae;
+		stroke-width: 10;
+	}
+
+	.container .chart-container .front {
+		stroke: #08415c;
+		stroke-width: 10;
+		stroke-linecap: round;
+		stroke-dasharray: 395.84;
+		transform: rotate(-90deg);
+		transform-origin: center;
+	}
+
+	.container .chart-container .text {
+		font-size: 32px;
+		fill: #063045;
+	}
+
+	@keyframes fill {
+		to {
+			stroke-dasharray: 0, 1000000;
+		}
+	}
+
+
+	@keyframes display {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.front {
+	/* On top of all other styling elements */
+		animation: fill 2s reverse;
+	}
+
+	.text {
+		/* On top of all other styling elements */
+		opacity: 0;
+		transform: translateY(30%);
+		animation: display 2s forwards;
+	}
+</style>
+
+<script>
+	// Optional, if you want to make the text running
+	// I am using jquery, so you need to import it first.
+	let percent = 70;
+	let counter = 0;
+	let intervalID = null;
+
+	$(document).ready(()=>{
+		intervalID = setInterval(updateNumber, 100);
+	});
+
+	// Update the number
+	function updateNumber() {
+		let step = 4;
+		if (counter + step >= percent) {
+			counter = percent;
+			$('#percentage').html(counter + '%');
+			clearInterval(intervalID);
+			return;
+		}
+		counter += step;
+		$('#percentage').html(counter + '%');
+	}
+</script>
