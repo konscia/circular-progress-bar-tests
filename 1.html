@@ -1,54 +1,114 @@
-<p> A simple and elegant way to create a chart with only css and svg</p>
-<a href="https://medium.com/@pppped/how-to-code-a-responsive-circular-percentage-chart-with-svg-and-css-3632f8cd7705">How to code a responsive circular percentage chart with SVG and CSS.</a>
-<br />
-<br />
+<meta charset="UTF-8"/>
+<link rel="stylesheet" href="examples.css"/>
 
-<svg viewBox="0 0 36 36" class="circular-chart">
-	<path class="circle"
-	      stroke-dasharray="50, 100"
-	      d="M18 2.0845
-      a 15.9155 15.9155 0 0 1 0 31.831
-      a 15.9155 15.9155 0 0 1 0 -31.831"
-	/>
-</svg>
+<h1>Exemplo 1 - SVG e CSS Simples</h1>
+<p>
+	Baseado no artigo
+	<em><a target="_blank" href="https://medium.com/@pppped/how-to-code-a-responsive-circular-percentage-chart-with-svg-and-css-3632f8cd7705">
+		How to code a responsive circular percentage chart with SVG and CSS.</a></em>
+</p>
 
-<svg viewBox="0 0 36 36" class="circular-chart-2">
-	<path class="circle-2"
-	      stroke-dasharray="50, 100"
-	      d="M18 2.0845
-      a 15.9155 15.9155 0 0 1 0 31.831
-      a 15.9155 15.9155 0 0 1 0 -31.831"
-	/>
-</svg>
+<hr/>
+
+<div class="center-all">
+	<svg viewBox="0 0 36 36" class="circular-chart-box" style="--box-width: 220;">
+		<path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+		<path class="circle"
+		      stroke-dasharray="60, 100"
+		      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+		/>
+	</svg>
+
+	<svg viewBox="0 0 36 36" class="circular-chart-box" style="--box-width: 180; --bar-color: #ee8844;">
+		<path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+		<path class="circle"
+		      stroke-dasharray="70, 100"
+		      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+		/>
+	</svg>
+
+	<svg viewBox="0 0 36 36" class="circular-chart-box" style="--box-width: 140; --bar-color: #8877dd;">
+		<path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+		<path class="circle"
+		      stroke-dasharray="90, 100"
+		      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+		/>
+	</svg>
+</div>
+
+<hr/>
+
+<p>
+	Este exemplo mostra a criação de um SVG que utiliza um elemento PATH para criar um arco,
+	e com o contorno desse arco, criar a barra de progresso.
+</p>
+<p>
+	O percentual é controlado pela propriedade <em>"stroke-dasharray"</em>
+	que informa o padrão do contorno.
+</p>
+<p>
+	O exemplo original foi alterado para contemplar:
+</p>
+<ul>
+	<li>✅ Sobreposição dos gráficos um sobre o outro;</li>
+	<li>✅ Alteração do tamanho do gráfico mantendo a grossura da linha;</li>
+	<li>✅ Personalização do tamanho via variável CSS;</li>
+	<li>✅ Personalização da cor via variável CSS;</li>
+	<li>✅ Inclusão do fundo cinza de cada barra do gráfico.</li>
+</ul>
 
 <style>
-	.circular-chart {
-		display: block;
-		margin: 10px auto;
-		max-width: 80%;
-		max-height: 250px;
+	:root {
+		/* Variáveis para o controle dinâmico do tamanho e da borda dos gráficos */
+		--stroke-width-default: 1.5;
+		--box-width-default: 250;
+		--box-width: 250;
+		--bar-color: #4CC790;
 	}
 
-	.circular-chart-2 {
-		display: block;
-		margin: -215px auto;
-		max-width: 80%;
-		max-height: 160px;
+	.center-all {
+		position: relative;
+		width: calc(var(--box-width-default) * 1px); /* little trick to add unit to box-width-default value */
+		height: calc(var(--box-width-default) * 1px);
+		margin: 10px auto;
+	}
+
+	.center-all > * {
+		/* center all SVG, one above another, to see as a unique SVG chart */
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	.circular-chart-box {
+		width: calc(var(--box-width) * 1px);
+		height: calc(var(--box-width) * 1px);
+	}
+
+
+	.circle, .circle-bg {
+		fill: none;
+		/* use the inversed version of The Rule of Three to calc the stroke width exactly in the same size as the greater circle */
+		stroke-width: calc(var(--stroke-width-default) * var(--box-width-default) / var(--box-width));
+	}
+
+	.circle-bg {
+		stroke: #eeeeee;
 	}
 
 	.circle {
-		stroke: #4CC790;
-		stroke-width: 2.4;
-		fill: none;
+		stroke: var(--bar-color);
 		stroke-linecap: round;
-		animation: progress 1s ease-out forwards;
 	}
 
-	.circle-2 {
-		stroke: #4CC790;
-		stroke-width: 4;
-		fill: none;
-		stroke-linecap: round;
+	/*
+	 * ANIMAÇÃO
+	 * Cria uma animação que inicia no momento em que o elemento é carregado até o percentual preenchido
+	 * diretamente com a propriedade inline do path do SVG
+	 */
+
+	.circle {
 		animation: progress 1s ease-out forwards;
 	}
 
