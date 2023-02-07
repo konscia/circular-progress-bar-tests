@@ -1,12 +1,68 @@
-<p>Another simple and elegant way with a little JS to animate the chart</p>
-<a href="https://codepen.io/nkunic/pen/jXBZWV">A CodePen example</a>
+<meta charset="UTF-8"/>
+<link rel="stylesheet" href="examples.css"/>
 
-<br />
+<h1>Exemplo 2 - Elemento <em>circle</em> e outras técnicas</h1>
+<p>
+	Baseado no <em>CodePen</em>:
+	<a href="https://codepen.io/nkunic/pen/jXBZWV">CodePen Home SVG circle progress bar using stroke-dashoffset</a>
+</p>
+
+<hr />
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="my-circle">
+	<circle cx="50" cy="50" r="48" stroke-width="2" fill="none"/>
+	<circle cx="50" cy="50" r="48" stroke-width="2" fill="none" id="my-circle-bar" />
+</svg>
 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 34 34">
 	<circle cx="16" cy="16" r="15.9155" class="progress-bar__background" />
 	<circle cx="16" cy="16" r="15.9155"  class="progress-bar__progress js-progress-bar" />
 </svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+	<circle cx="18" cy="18" r="17" class="progress-bar__background" />
+	<circle cx="18" cy="18" r="17"  class="progress-bar__progress js-progress-bar specific-stroke-in-pix" vector-effect="non-scaling-stroke" id="my-circle-bar-in-pixels" />
+</svg>
+
+<hr/>
+
+<p>
+	A técnica é muito parecida com o <a href="./1.html" target="_blank">Exemplo 1</a>.
+</p>
+<p>
+	As diferenças são que este exemplo:
+</p>
+<ul>
+	<li>🔶 Utiliza o elemento SVG <em>circle</em> ao invés do elemento <em>path</em>;</li>
+	<li>🔶 Utiliza a animação na propriedade <em>stroke-dashoffset</em> ao invés do <em>stroke-dasharray</em>;</li>
+	<li>🔶 Realiza a ativação da animação com JavaScript;</li>
+</ul>
+<p>Eu alterei o exemplo original para:</p>
+<ul>
+	<li>✅ Usar variáveis CSS ao invés de variáveis Sass;</li>
+	<li>✅ Criar um segundo exemplo de círculo com uma circunferência diferente de 100 para testar como ficam os valores das propriedades stroke-dasharray e stroke-dashoffset nestes casos;</li>
+	<li>✅ Criar um terceiro exemplo onde a grossura da linha é controlada com pixels diretamente, sem escalar. Nesse caso, o controle dos valores da linha devem ser em pixels.</li>
+</ul>
+
+<h2>Nota sobre a propriedade stroke-dashoffset</h2>
+
+<p>
+	Conforme a W3, <a href="https://www.w3.org/TR/svg-strokes/#StrokeDashing">a propriedade stroke-dashoffset</a>
+	<em>"specifies the distance into the repeated dash pattern to start the stroke dashing at the beginning of the path"</em>,
+	ou seja, o offset é de qual ponto do PADRÃO a linha começará a ser preenchida.
+</p>
+<p>
+	O offset não é referente à linha, mas ao padrão. O mais óbvio para mim era pensar que o offset seria um espaço em branco
+	antes de começar o padrão da linha, mas não, ele é o ponto de início do padrão na linha.
+</p>
+<p>
+	Por exemplo, um padrão stroke-dashoffset poderia ser: "10 5" ou seja, preenche 10 unidades e dá um espaço de 5.
+	Ao colocar um offset de 7 o padrão visível na linha será algo como: "3 5 10 5 10 5 ..." porque o offset come "7" unidades antes de iniciar o padrão.
+</p>
+<p>
+	Nessa lógica a animação pelo dash-offset é uma animação ao contrário, porque com o valor 0, a linha é totalmente preenchida, um valor 100% traz o padrão da linha totalmente para trás, escondendo-o.
+	Por isso, neste exemplo, para a animação, o stroke-dashoffset é iniciado com 100%, diferente do exemplo 1 onde ele nem é usado porque a animação ocorre direto na propriedade stroke-dasharray.
+</p>
 
 <style>
 	/* I changed the example to use css variables instead SCSS variables and add some comments */
@@ -22,10 +78,23 @@
 		transform: rotate(-90deg);
 	}
 
+	svg.my-circle > circle:nth-child(1) {
+		stroke: lightgray;
+	}
+
+	svg.my-circle > circle:nth-child(2) {
+		stroke: lightsalmon;
+		stroke-dasharray: 301.59, 301.59;
+		stroke-dashoffset: 301.59;
+		stroke-linecap: round;
+		transition: stroke-dashoffset 1s ease-in-out;
+	}
+
 	.progress-bar__background {
 		fill: none;
 		stroke: #e2eff0;
-		stroke-width: var(--progress-bar-stroke-width);
+		/*stroke-width: var(--progress-bar-stroke-width);*/
+		stroke-width: 1px;
 	}
 
 	.progress-bar__progress {
@@ -37,6 +106,12 @@
 		stroke-width: var(--progress-bar-stroke-width);
 		transition: stroke-dashoffset 1s ease-in-out;
 	}
+
+	.progress-bar__progress.specific-stroke-in-pix {
+		stroke-width: 5px;
+		stroke-dasharray: 890.117918517 890.117918517;
+		stroke-dashoffset: 890.117918517;
+	}
 </style>
 
 <script>
@@ -45,5 +120,19 @@
 		const strokeDashOffsetValue = 100 - (percentageComplete * 100);
 		const progressBar = document.getElementsByClassName("js-progress-bar")[0];
 		progressBar.style["stroke-dashoffset"] = strokeDashOffsetValue;
-	}, 400)
+	}, 400);
+
+	setTimeout(() => {
+		const percentageComplete = 0.4;
+		const strokeDashOffsetValue = 301.59 - (percentageComplete * 301.59);
+		const progressBar = document.getElementById("my-circle-bar");
+		progressBar.style["stroke-dashoffset"] = strokeDashOffsetValue;
+	}, 700);
+
+	setTimeout(() => {
+		const percentageComplete = 0.4;
+		const strokeDashOffsetValue = 857.143163627 - (percentageComplete * 857.143163627);
+		const progressBar = document.getElementById("my-circle-bar-in-pixels");
+		progressBar.style["stroke-dashoffset"] = strokeDashOffsetValue;
+	}, 1000)
 </script>
