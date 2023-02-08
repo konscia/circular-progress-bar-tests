@@ -1,21 +1,20 @@
+<meta charset="UTF-8"/>
+
+<h1>Exemplo 3 - Cálculo dinâmico do valor do dashoffset</h1>
+<p>Baseado no CodePen <a href="https://codepen.io/JMChristensen/pen/AGbeEy">SVG Circle Progress</a></p>
+
+<!-- Includes JQuery for my simple animation code -->
 <script
 	src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
 	integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo="
 	crossorigin="anonymous"></script>
 
-<p>A more complicated example about the same idea from tests one and two</p>
-<a href="https://codepen.io/JMChristensen/pen/AGbeEy">A CodePen complete example</a>
-
 <hr/>
-
-<h1>SVG Circle Progress</h1>
-<h2>Based off of CSS3 circle progress bars</h2>
 
 <div id="cont" data-pct="100">
 	<svg id="svg" width="200" height="200" viewPort="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
 		<circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-		<circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48"
-		        stroke-dashoffset="0"></circle>
+		<circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
 	</svg>
 </div>
 <label for="percent">Type a percent!</label>
@@ -65,7 +64,6 @@
 		color: #000;
 	}
 
-
 	/* Make things perty */
 	html {
 		height: 100%;
@@ -100,28 +98,43 @@
 		margin: 1em auto;
 		text-align: center;
 	}
+
+	a {
+		color: white;
+	}
 </style>
 
 <script>
-	$('#percent').on('change', function(){
+	$('#percent').on('change', function () {
 		var val = parseInt($(this).val());
 		var $circle = $('#svg #bar');
 
 		if (isNaN(val)) {
 			val = 100;
-		}
-		else{
+		} else {
 			var r = $circle.attr('r');
-			var c = Math.PI*(r*2);
+			var c = Math.PI * (r * 2);
 
-			if (val < 0) { val = 0;}
-			if (val > 100) { val = 100;}
+			if (val < 0) {
+				val = 0;
+			}
+			if (val > 100) {
+				val = 100;
+			}
 
-			var pct = ((100-val)/100)*c;
+			var pct = ((100 - val) / 100) * c;
 
-			$circle.css({ strokeDashoffset: pct});
+			$circle.css({strokeDashoffset: pct});
 
-			$('#cont').attr('data-pct',val);
+			$('#cont').attr('data-pct', val);
 		}
 	});
 </script>
+
+<hr />
+
+<p>
+	Este exemplo utiliza o elemento <em>circle</em> para o SVG e faz a animação na propriedade <em>stroke-dashoffset</em>, como no exemplo 2.
+	Como o SVG não foi calculado com comprimento 100 (diferente do exemplo 1), é necessário um cálculo usando a fórmula da circunferência
+	que transforma o percentual digitado em um valor em tamanho do comprimento da circunferência.
+</p>

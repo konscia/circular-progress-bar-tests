@@ -1,9 +1,16 @@
-<p> A more explicated example</p>
-<a href="https://medium.com/@josephwong2004/how-to-do-x-in-css-radial-progress-chart-317f10994c08">How to do Radial
-	Progress Chart in CSS</a>
+<meta charset="UTF-8"/>
+<link rel="stylesheet" href="examples.css"/>
+
+<h1>Exemplo 4 - Animação Barra e Texto</h1>
+<p>
+	Baseado no artigo
+	<em><a target="_blank" href="https://medium.com/@josephwong2004/how-to-do-x-in-css-radial-progress-chart-317f10994c08">
+		How to do “Radial Progress Chart” in CSS.</a></em>
+</p>
 
 <hr />
 
+<!-- Includes JQuery to simplify JavaScript -->
 <script
 	src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
 	integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo="
@@ -20,18 +27,11 @@
 </div>
 
 <style>
-	.container {
-		display: flex;
-		justify-content: center;
-		background-color: #edf2f4;
-		min-height: 100vh;
-	}
-
-	.container .chart-container {
+	.chart-container {
 		padding: 10px;
 	}
 
-	.container .chart-container .back {
+	.chart-container .back {
 		stroke: #8d99ae;
 		stroke-width: 10;
 	}
@@ -40,7 +40,7 @@
 		stroke: #08415c;
 		stroke-width: 10;
 		stroke-linecap: round;
-		stroke-dasharray: 395.84;
+		stroke-dasharray: 395.84; /* 70% */
 		transform: rotate(-90deg);
 		transform-origin: center;
 	}
@@ -101,3 +101,9 @@
 		$('#percentage').html(counter + '%');
 	}
 </script>
+
+<hr />
+<p>
+	Realiza a animação diretamente na propriedade dasharray, faz uma animação de progresso do número percentual.
+	Nenhuma novidade em relação ao SVG em relação aos outros 3 exemplos.
+</p>
